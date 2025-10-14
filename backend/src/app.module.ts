@@ -4,7 +4,8 @@ import { AppService } from './app.service';
 import { CspModule } from './csp/csp.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { User } from './users/entities/user.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -15,15 +16,16 @@ import { DataSource } from 'typeorm';
       username: 'root',
       password: 'example',
       database: 'mydb',
-      entities: [],
+      entities: [User],
       synchronize: true,
     }),
     CspModule,
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) {}
+  constructor() {}
 }
