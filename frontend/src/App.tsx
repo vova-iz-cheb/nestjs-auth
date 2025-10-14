@@ -1,22 +1,9 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div>
-        <a href='https://vite.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>Vite + React + SWC</h1>
       <div className='card'>
         <button
           onClick={() => {
@@ -31,16 +18,48 @@ function App() {
         >
           request from backend
         </button>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+
+        <h2>Регистрация</h2>
+        <label htmlFor='login'>Логин</label>
+        <input id='login' type='text' />
+
+        <label htmlFor='email'>Почта</label>
+        <input id='email' type='email' />
+
+        <label htmlFor='password'>Пароль</label>
+        <input id='password' type='password' />
+
+        <label htmlFor='password2'>Повторите пароль</label>
+        <input id='password2' type='password2' />
+
+        <button
+          onClick={() => {
+            fetch('http://localhost:3000/auth/registration', {
+              body: JSON.stringify({
+                login: (document.getElementById('login') as HTMLInputElement)
+                  .value,
+                email: (document.getElementById('email') as HTMLInputElement)
+                  .value,
+                password: (
+                  document.getElementById('password') as HTMLInputElement
+                ).value,
+              }),
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+              .then((x) => x.json())
+              .then((x) => {
+                console.log('Registration response', x);
+                return x;
+              })
+              .catch((e) => console.error('Registration error', e));
+          }}
+        >
+          Зарегистрироваться
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }

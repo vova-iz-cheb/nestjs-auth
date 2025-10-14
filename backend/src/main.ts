@@ -7,6 +7,7 @@ import {
 import helmet from '@fastify/helmet';
 import { join } from 'path';
 import handlebars from 'handlebars';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -36,6 +37,8 @@ async function bootstrap() {
     },
     templates: join(__dirname, '..', 'views'),
   });
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT ?? 3000);
 }
