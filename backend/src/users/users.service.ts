@@ -10,10 +10,16 @@ export class UsersService {
     private readonly userService: Repository<User>,
   ) {}
 
-  getUserByLoginOrEmail(login: string, email: string) {
-    return this.userService.findOne({
-      where: [{ login }, { email }],
-    });
+  getUserByLoginOrEmail(login: string, email?: string) {
+    if (!email) {
+      return this.userService.findOne({
+        where: [{ login }],
+      });
+    } else {
+      return this.userService.findOne({
+        where: [{ login }, { email }],
+      });
+    }
   }
 
   async createUser(login: string, email: string, passwordHash: string) {

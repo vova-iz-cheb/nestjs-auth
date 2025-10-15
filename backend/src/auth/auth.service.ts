@@ -3,19 +3,19 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { RegistrationDto } from './dto/registration.dto';
+import { RegisterDto } from './dto/register.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly usersService: UsersService) {}
 
-  async register(data: RegistrationDto) {
+  async register(data: RegisterDto) {
     const { login, email, password } = data;
 
     const user = await this.usersService.getUserByLoginOrEmail(login, email);
-    console.log('user', user);
 
     if (user) {
       throw new BadRequestException(
@@ -37,9 +37,23 @@ export class AuthService {
     }
   }
 
-  // recoveryPass
+  async login(data: LoginDto) {
+    const { login, password } = data;
 
-  // login
+    const user = await this.usersService.getUserByLoginOrEmail(login);
+
+    if (!user) {
+      throw new BadRequestException('Пользователь не найден.');
+    }
+
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
+
+    if (!isMatch) throw new BadRequestException('Неверный пароль.');
+
+    // TODO вернуть jwt в заголовке
+  }
+
+  // recoveryPass
 
   // sendMail
 }

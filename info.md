@@ -27,6 +27,5 @@ isVerify в БД - не входить если false
 
 отдать JWT токен - и доступ к ресурсам только с токеном (авторизация)
 
-2 bd and docker files
 3 authentication with hash ( salt pepper hash , registration, login, JWT, verify, restore PASS)
 4 simple authorization attribute based access control Encryption

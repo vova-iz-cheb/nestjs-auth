@@ -1,19 +1,42 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity()
+@Entity({ name: 'users' })
+@Index(['email'])
+@Index(['login'])
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    length: 20,
+    unique: true,
+  })
   login: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    length: 255,
+    unique: true,
+  })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   passwordHash: string;
 
-  @Column()
+  @Column({ type: 'boolean', default: false })
   isVerified: boolean;
+
+  @CreateDateColumn()
+  createDate: Date;
+
+  @UpdateDateColumn()
+  updateDate: Date;
 }

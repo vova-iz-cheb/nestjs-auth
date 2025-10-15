@@ -30,11 +30,11 @@ function App() {
         <input id='password' type='password' />
 
         <label htmlFor='password2'>Повторите пароль</label>
-        <input id='password2' type='password2' />
+        <input id='password2' type='password' />
 
         <button
           onClick={() => {
-            fetch('http://localhost:3000/auth/registration', {
+            fetch('http://localhost:3000/auth/register', {
               body: JSON.stringify({
                 login: (document.getElementById('login') as HTMLInputElement)
                   .value,
@@ -58,6 +58,37 @@ function App() {
           }}
         >
           Зарегистрироваться
+        </button>
+
+        <h2>Вход</h2>
+        <label htmlFor='login2'>Логин</label>
+        <input id='login2' type='text' />
+        <label htmlFor='password3'>Пароль</label>
+        <input id='password3' type='password' />
+        <button
+          onClick={() => {
+            fetch('http://localhost:3000/auth/login', {
+              body: JSON.stringify({
+                login: (document.getElementById('login2') as HTMLInputElement)
+                  .value,
+                password: (
+                  document.getElementById('password3') as HTMLInputElement
+                ).value,
+              }),
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+              .then((x) => x.json())
+              .then((x) => {
+                console.log('Login response', x);
+                return x;
+              })
+              .catch((e) => console.error('Login error', e));
+          }}
+        >
+          Войти
         </button>
       </div>
     </>
