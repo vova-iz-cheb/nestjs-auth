@@ -19,13 +19,18 @@ yarn add @nestjs/typeorm typeorm pg установка БД + yml для docker 
 
 yarn add bcrypt yarn add -D @types/bcrypt
 
+yarn add @nestjs/jwt
+
+jwt != encryption данные читаемы и base64, secret нужен чтобы никто не подделал токен
+JWT = payload + signature - если изменишь payload то поменяется целостность данных(хэш не совпадет) и verify не пройдет
+cookie vs header (CSRF vs XSS)
+
 //TODO
+client - jwt отправлять
+verify and Guard
+
 подтвердить почту и войти (отправка на почту письма)
-isVerify в БД - не входить если false
-
 восстановить пароль через почту и изменить его
-
-отдать JWT токен - и доступ к ресурсам только с токеном (авторизация)
 
 3 authentication with hash ( salt pepper hash , registration, login, JWT, verify, restore PASS)
 4 simple authorization attribute based access control Encryption
