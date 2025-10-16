@@ -1,14 +1,23 @@
+import { useState } from 'react';
 import './App.css';
 
+const headers = {
+  'Content-Type': 'application/json',
+};
+
 function App() {
+  const [token, setToken] = useState(null);
+
   return (
     <>
       <h1>Vite + React + SWC</h1>
       <div className='card'>
         <button
           onClick={() => {
-            fetch('http://localhost:3000/')
-              .then((x) => x.text())
+            fetch('http://localhost:3000/', {
+              headers,
+            })
+              .then((x) => x.json())
               .then((x) => {
                 console.log('request', x);
                 return x;
@@ -16,7 +25,25 @@ function App() {
               .catch((e) => console.error('e', e));
           }}
         >
-          request from backend
+          request to backend public
+        </button>
+        <button
+          onClick={() => {
+            fetch('http://localhost:3000/auth/protected_resource', {
+              headers: {
+                ...headers,
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((x) => x.json())
+              .then((x) => {
+                console.log('request', x);
+                return x;
+              })
+              .catch((e) => console.error('e', e));
+          }}
+        >
+          request to backend PROTECTED
         </button>
 
         <h2>Регистрация</h2>
@@ -45,11 +72,9 @@ function App() {
                 ).value,
               }),
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
+              headers,
             })
-              .then((x) => x.json())
+              .then((x) => x.text())
               .then((x) => {
                 console.log('Registration response', x);
                 return x;
@@ -76,13 +101,13 @@ function App() {
                 ).value,
               }),
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
+              headers,
             })
               .then((x) => x.json())
               .then((x) => {
                 console.log('Login response', x);
+
+                setToken(x.accessToken);
                 return x;
               })
               .catch((e) => console.error('Login error', e));

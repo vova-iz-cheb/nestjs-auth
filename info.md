@@ -24,10 +24,12 @@ yarn add @nestjs/jwt
 jwt != encryption данные читаемы и base64, secret нужен чтобы никто не подделал токен
 JWT = payload + signature - если изменишь payload то поменяется целостность данных(хэш не совпадет) и verify не пройдет
 cookie vs header (CSRF vs XSS)
+HS256 (HMAC-SHA256) - jwt alg
+
+client - jwt отправлять
+verify + guard
 
 //TODO
-client - jwt отправлять
-verify and Guard
 
 подтвердить почту и войти (отправка на почту письма)
 восстановить пароль через почту и изменить его

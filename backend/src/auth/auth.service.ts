@@ -9,7 +9,7 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { type FastifyReply } from 'fastify';
+import { JwtPayload } from './types';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +44,7 @@ export class AuthService {
     }
   }
 
-  async login(data: LoginDto, res: FastifyReply) {
+  async login(data: LoginDto) {
     const { login, password } = data;
 
     const user = await this.usersService.getUserByLoginOrEmail(login);
@@ -60,15 +60,20 @@ export class AuthService {
     // TODO isVerified false - просить подтвердить почту
 
     // TODO jwtService
-    const payload = {
+    const payload: JwtPayload = {
       sub: user.id,
       login: user.login,
     };
 
-    const access_token = await this.jwtService.signAsync(payload);
+    const accessToken = await this.jwtService.signAsync(payload);
 
-    console.log('access_token', access_token);
-    res.header('Authorization', `Bearer ${access_token}`);
+    console.log('accessToken', accessToken);
+
+    return { accessToken };
+  }
+
+  checkProtectedResource() {
+    return { secret: 'I love you' };
   }
 
   // recoveryPass
