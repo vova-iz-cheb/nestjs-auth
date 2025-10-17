@@ -12,6 +12,10 @@
       {
         "include": "../views/**/*",
         "outDir": "dist/views"
+      },
+      {
+        "include": "../secrets/**/*",
+        "outDir": "dist/secrets"
       }
     ]
   }

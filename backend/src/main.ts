@@ -5,9 +5,12 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import helmet from '@fastify/helmet';
-import { join } from 'path';
+import path, { join } from 'path';
 import handlebars from 'handlebars';
 import { ValidationPipe } from '@nestjs/common';
+import fastifyCsrf from '@fastify/csrf-protection';
+import fastifySecureSession from '@fastify/secure-session';
+import fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -20,6 +23,25 @@ async function bootstrap() {
       directives: {
         imgSrc: [`'self'`, 'data:', 'avatars.dzeninfra.ru'],
       },
+    },
+  });
+
+  await app.register(fastifySecureSession, {
+    // TODO хранить в др месте
+    key: fs.readFileSync(
+      path.join(__dirname, 'secrets', 'secure-session-secret-key'),
+    ),
+    sessionName: 'csrf-session',
+    cookieName: 'csrf-session-cookie',
+    cookie: {
+      path: '/',
+    },
+  });
+
+  await app.register(fastifyCsrf, {
+    getToken: (req) => {
+      const csrfToken = (req.query as { csrf?: string })?.csrf ?? '';
+      return csrfToken;
     },
   });
 

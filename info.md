@@ -29,10 +29,10 @@ HS256 (HMAC-SHA256) - jwt alg
 client - jwt отправлять
 verify + guard
 
-//TODO
+csrf подключил (доступ к fastifyInstance)
 
+//TODO
 подтвердить почту и войти (отправка на почту письма)
 восстановить пароль через почту и изменить его
-
-3 authentication with hash ( salt pepper hash , registration, login, JWT, verify, restore PASS)
-4 simple authorization attribute based access control Encryption
+add pepper
+simple authorization ABAC
